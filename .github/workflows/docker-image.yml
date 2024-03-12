@@ -29,5 +29,11 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+             my-docker-hub-namespace/my-docker-hub-repository:latest
+
+          labels: |
+            maintainer=ibrarullah204@gmail.com
+            description=go todo app psuh by github action
+            version=1.0.0
+
