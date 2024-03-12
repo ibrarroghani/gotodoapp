@@ -30,7 +30,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-             my-docker-hub-namespace/my-docker-hub-repository:latest
+             ibrarullah/goapp:latest
 
           labels: |
             maintainer=ibrarullah204@gmail.com
