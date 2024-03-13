@@ -30,7 +30,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-             ibrarullah/goapp:latest
+             ibrarullah/goapp:1.2
 
           labels: |
             maintainer=ibrarullah204@gmail.com
