@@ -1,4 +1,4 @@
-name: push  Docker image
+name: push Docker image
 
 on:
   push:
@@ -23,6 +23,14 @@ jobs:
         with:
           images: ibrarullah/goapp
 
+      - name: Get latest tag
+        id: get_latest_tag
+        run: echo "::set-output name=tag::$(git tag --sort=committerdate | tail -n1)"
+
+      - name: Increment tag
+        id: increment_tag
+        run: echo "::set-output name=tag::v$((${{ steps.get_latest_tag.outputs.tag//v/ }} + 1))"
+
       - name: Build and push Docker image
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
@@ -30,10 +38,9 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-             ibrarullah/goapp:1.2
+            ibrarullah/goapp:${{ steps.increment_tag.outputs.tag }}
 
           labels: |
             maintainer=ibrarullah204@gmail.com
             description=go todo app psuh by github action
-            version=1.0.0
-
+            version=${{ steps.increment_tag.outputs.tag }}
