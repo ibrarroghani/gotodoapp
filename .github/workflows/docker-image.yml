@@ -19,17 +19,9 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Get the latest Git tag
-        id: get_latest_tag
-        run: echo "::set-output name=tag::$(git describe --abbrev=0 --tags)"
-
-      - name: Remove leading 'v' from tag
-        id: remove_v
-        run: echo "::set-output name=tag::${{ steps.get_latest_tag.outputs.tag }}"
-
-      - name: Increment tag
-        id: increment_tag
-        run: echo "::set-output name=tag::$((${{ steps.remove_v.outputs.tag }} + 1))"
+      - name: Get the latest Git commit SHA
+        id: get_commit_sha
+        run: echo "::set-output name=commit_sha::$(git rev-parse --short HEAD)"
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
@@ -39,9 +31,9 @@ jobs:
           push: true
           tags: |
             ibrarullah/goapp:latest
-            ibrarullah/goapp:${{ steps.increment_tag.outputs.tag }}
+            ibrarullah/goapp:${{ steps.get_commit_sha.outputs.commit_sha }}
 
           labels: |
             maintainer=ibrarullah204@gmail.com
             description=Go todo app pushed by GitHub Actions
-            version=${{ steps.increment_tag.outputs.tag }}
+            version=${{ steps.get_commit_sha.outputs.commit_sha }}
