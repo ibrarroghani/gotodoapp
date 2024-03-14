@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   web:
-    image: ibrarullah/goapp:4fd64d1
+    image: ibrarullah/goapp:${{ github.sha }}
     ports:
       - 4040:4040
     depends_on:
